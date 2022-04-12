@@ -48,7 +48,7 @@
         <span class="input-group-text">Pick a Date</span>
         <input type="date" id="resDate" name="resDate" class="form-select mr-3">
         <span class="input-group-text">Choose a Time</span>
-        <select name="resTime" id="resTime" class="form-select">
+        <select name="resTime" id="resTime" class="form-select" disabled>
         </select>
     </div>
 
@@ -85,6 +85,9 @@
         });
         $('#resTime').on('mouseover', checkAvailability);
         $('#reservation-button').on('click', makeReservation);
+        $('#resDate').on('change', function () {
+            $('#resTime').attr("disabled", false)
+        })
     });
 
 

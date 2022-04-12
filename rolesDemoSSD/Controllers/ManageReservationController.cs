@@ -59,7 +59,7 @@ namespace rolesDemoSSD.Controllers
         [HttpGet("{resID}/{cap}/{time}")]
         public IActionResult GetTables(long resID, int cap, string time)
         {
-            //figure out the correct way to do this
+
             DateTime requestedTime = DateTime.Parse(time);
             bool found = false;
             int foundTableID = -1;
