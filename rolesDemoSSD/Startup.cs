@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using rolesDemoSSD.Data;
+using rolesDemoSSD.Data.Services;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -81,6 +82,7 @@ namespace rolesDemoSSD
                 // User settings
                 options.User.RequireUniqueEmail = true;
             });
+            services.AddTransient<IEmailService, EmailService>();
 
         }
 
