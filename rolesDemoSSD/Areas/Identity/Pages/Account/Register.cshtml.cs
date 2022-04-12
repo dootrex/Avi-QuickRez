@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using rolesDemoSSD.Data;
+using rolesDemoSSD.Data.Services;
 using rolesDemoSSD.Models;
 
 namespace rolesDemoSSD.Areas.Identity.Pages.Account
@@ -26,9 +27,11 @@ namespace rolesDemoSSD.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
+        private readonly IEmailService _emailService;
+
 
         //tableClass..................
-       
+
 
 
 
@@ -43,7 +46,8 @@ namespace rolesDemoSSD.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            ApplicationDbContext context
+            ApplicationDbContext context,
+            IEmailService emailService
         )
         {
             _context = context;
@@ -51,6 +55,7 @@ namespace rolesDemoSSD.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _emailService = emailService;
         }
 
         [BindProperty]
@@ -64,7 +69,7 @@ namespace rolesDemoSSD.Areas.Identity.Pages.Account
         {
             //restaurant table table...............................
 
-            
+
 
 
             //restaurant table table end here...............................
@@ -153,7 +158,7 @@ namespace rolesDemoSSD.Areas.Identity.Pages.Account
                     _context.SaveChanges();
 
 
-                    
+
 
 
                     _logger.LogInformation("User created a new account with password.");
@@ -166,12 +171,24 @@ namespace rolesDemoSSD.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    var response = await _emailService.SendSingleEmail(new Models.ComposeEmailModel
+                    {
+                        FirstName = Input.BusinessName,
+                        LastName = String.Empty,
+                        Subject = "Confirm your email",
+                        Email = Input.Email,
+                        Body = $"Please confirm your account by <a href = '{HtmlEncoder.Default.Encode(callbackUrl)}' > Clicking here </ a >."
+                    });
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new
+                        {
+                            email = Input.Email,
+                            returnUrl = returnUrl,
+                            DisplayConfirmAccountLink = true
+
+                        });
                     }
                     else
                     {
