@@ -28,10 +28,10 @@ namespace rolesDemoSSD.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
         private readonly IEmailService _emailService;
-        
+
 
         //tableClass..................
-       
+
 
 
 
@@ -69,7 +69,7 @@ namespace rolesDemoSSD.Areas.Identity.Pages.Account
         {
             //restaurant table table...............................
 
-            
+
 
 
             //restaurant table table end here...............................
@@ -158,7 +158,7 @@ namespace rolesDemoSSD.Areas.Identity.Pages.Account
                     _context.SaveChanges();
 
 
-                    
+
 
 
                     _logger.LogInformation("User created a new account with password.");
@@ -173,7 +173,7 @@ namespace rolesDemoSSD.Areas.Identity.Pages.Account
 
                     var response = await _emailService.SendSingleEmail(new Models.ComposeEmailModel
                     {
-                        FirstName = "Team Hamsters", 
+                        FirstName = Input.BusinessName,
                         LastName = String.Empty,
                         Subject = "Confirm your email",
                         Email = Input.Email,
@@ -184,11 +184,10 @@ namespace rolesDemoSSD.Areas.Identity.Pages.Account
                     {
                         return RedirectToPage("RegisterConfirmation", new
                         {
-                           email = Input.Email
-,
-                           returnUrl = returnUrl
-,
-                           DisplayConfirmAccountLink = false
+                            email = Input.Email,
+                            returnUrl = returnUrl,
+                            DisplayConfirmAccountLink = true
+
                         });
                     }
                     else
