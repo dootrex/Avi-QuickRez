@@ -54,19 +54,20 @@ namespace rolesDemoSSD.Data
 
 
             modelBuilder.Entity<Restaurant>().HasData(
-                new Restaurant { RestaurantId = 1, BusinessNum = "bhre5999", BusinessUrl = "www.blah.com", CityName = "Vancouver", Email = "hotters@hooters.com", Province = "BC", RestaurantName = "Hooters", StreetAddress = "1 Main Street", OpeningHour = 9, ClosingHour = 22 },
-                 new Restaurant { RestaurantId = 2, BusinessNum = "bhre5984", BusinessUrl = "www.wendys.com", CityName = "Vancouver", Email = "wendy@wendys.com", Province = "BC", RestaurantName = "Wendys", StreetAddress = "10 Main Street", OpeningHour = 9, ClosingHour = 22 });
-            modelBuilder.Entity<RestaurantTable>().HasData(
-                new RestaurantTable { RestaurantID = 1, TableCapacity = 4, RestaurantTableID = 1 },
-                                new RestaurantTable { RestaurantID = 1, TableCapacity = 6, RestaurantTableID = 2 },
-                                 new RestaurantTable { RestaurantID = 2, TableCapacity = 4, RestaurantTableID = 3 },
-                           new RestaurantTable { RestaurantID = 2, TableCapacity = 4, RestaurantTableID = 4 }
-                                );
-            modelBuilder.Entity<Customer>().HasData(
-                new Customer { CustomerID = 1, bookingName = "Eugene", PhoneNum = "2525258987" });
-            modelBuilder.Entity<Reservation>().HasData(
-                new Reservation { ReservationID = 1, CustomerID = 1, RestaurantTableID = 1, ReservationStart = new DateTime(2022, 3, 16, 12, 0, 0), ReservationEnd = new DateTime(2022, 3, 16, 13, 0, 0) });
-
+                  new Restaurant { RestaurantId = 1, BusinessNum = "bhre5999", BusinessUrl = "www.blah.com", CityName = "Vancouver", Email = "hotters@hooters.com", Province = "BC", RestaurantName = "Hooters", StreetAddress = "1 Main Street", OpeningHour = 9, ClosingHour = 22 },
+                   new Restaurant { RestaurantId = 2, BusinessNum = "bhre5984", BusinessUrl = "www.wendys.com", CityName = "Vancouver", Email = "wendy@wendys.com", Province = "BC", RestaurantName = "Wendys", StreetAddress = "10 Main Street", OpeningHour = 9, ClosingHour = 22 });
+            /* 
+              modelBuilder.Entity<RestaurantTable>().HasData(
+                  new RestaurantTable { RestaurantID = 1, TableCapacity = 4, RestaurantTableID = 1 },
+                                  new RestaurantTable { RestaurantID = 1, TableCapacity = 6, RestaurantTableID = 2 },
+                                   new RestaurantTable { RestaurantID = 2, TableCapacity = 4, RestaurantTableID = 3 },
+                             new RestaurantTable { RestaurantID = 2, TableCapacity = 4, RestaurantTableID = 4 }
+                                  );
+              modelBuilder.Entity<Customer>().HasData(
+                  new Customer { CustomerID = 1, bookingName = "Eugene", PhoneNum = "2525258987" });
+              modelBuilder.Entity<Reservation>().HasData(
+                  new Reservation { ReservationID = 1, CustomerID = 1, RestaurantTableID = 1, ReservationStart = new DateTime(2022, 3, 16, 12, 0, 0), ReservationEnd = new DateTime(2022, 3, 16, 13, 0, 0) });
+  */
 
         }
     }

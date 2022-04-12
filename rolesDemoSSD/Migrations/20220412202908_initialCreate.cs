@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace rolesDemoSSD.Migrations
 {
-    public partial class initialcreate : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -274,11 +274,6 @@ namespace rolesDemoSSD.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "customers",
-                columns: new[] { "CustomerID", "PhoneNum", "bookingName", "memo" },
-                values: new object[] { 1, "2525258987", "Eugene", null });
-
-            migrationBuilder.InsertData(
                 table: "restaurants",
                 columns: new[] { "RestaurantId", "BusinessNum", "BusinessUrl", "CityName", "ClosingHour", "Email", "OpeningHour", "Province", "RestaurantName", "StreetAddress" },
                 values: new object[] { 1, "bhre5999", "www.blah.com", "Vancouver", 22, "hotters@hooters.com", 9, "BC", "Hooters", "1 Main Street" });
@@ -287,31 +282,6 @@ namespace rolesDemoSSD.Migrations
                 table: "restaurants",
                 columns: new[] { "RestaurantId", "BusinessNum", "BusinessUrl", "CityName", "ClosingHour", "Email", "OpeningHour", "Province", "RestaurantName", "StreetAddress" },
                 values: new object[] { 2, "bhre5984", "www.wendys.com", "Vancouver", 22, "wendy@wendys.com", 9, "BC", "Wendys", "10 Main Street" });
-
-            migrationBuilder.InsertData(
-                table: "restaurantTables",
-                columns: new[] { "RestaurantTableID", "RestaurantID", "TableCapacity" },
-                values: new object[] { 1, 1, 4 });
-
-            migrationBuilder.InsertData(
-                table: "restaurantTables",
-                columns: new[] { "RestaurantTableID", "RestaurantID", "TableCapacity" },
-                values: new object[] { 2, 1, 6 });
-
-            migrationBuilder.InsertData(
-                table: "restaurantTables",
-                columns: new[] { "RestaurantTableID", "RestaurantID", "TableCapacity" },
-                values: new object[] { 3, 2, 4 });
-
-            migrationBuilder.InsertData(
-                table: "restaurantTables",
-                columns: new[] { "RestaurantTableID", "RestaurantID", "TableCapacity" },
-                values: new object[] { 4, 2, 4 });
-
-            migrationBuilder.InsertData(
-                table: "reservations",
-                columns: new[] { "ReservationID", "CustomerID", "ReservationEnd", "ReservationStart", "RestaurantTableID" },
-                values: new object[] { 1, 1, new DateTime(2022, 3, 16, 13, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 3, 16, 12, 0, 0, 0, DateTimeKind.Unspecified), 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

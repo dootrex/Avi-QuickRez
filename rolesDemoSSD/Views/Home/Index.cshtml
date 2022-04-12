@@ -56,6 +56,7 @@
 
     <h2 id="blockStatus" class="text-primary"></h2>
     <button class="btn btn-success" id="reservation-button">MAKE A RESERVATION</button>
+    <h1 id="messageText"></h1>
     <hr />
     <br />
     <h1 id="reservationConfirmation" class="badge bg-primary text-wrap text-light h2"></h1>
@@ -140,6 +141,13 @@
 
         var customerName = $('#customerName').val()
         var phoneNumber = $('#phoneNumber').val()
+        if (customerName.length < 1) {
+            $('#messageText').show();
+            $('#messageText').text("All Fields are required. Please enter a name.")
+            $('#messageText').attr("class", "btn btn-outline-danger")
+            return;
+        }
+        $('#messageText').hide();
         var memo = $('#memo').val()
         var postData = {
             PhoneNum: phoneNumber,

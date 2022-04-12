@@ -24,15 +24,15 @@
         <tbody>
             @foreach (var item in Model)
             {
-<tr>
-    <td>@item.ReservationID</td>
-    <td>@item.CustomerName</td>
-    <td>@item.Memo</td>
-    <td>@item.TableNum</td>
-    <td>@item.StartTime.ToString("t")</td>
-    <td>@item.PhoneNum</td>
-</tr>
-}
+                <tr>
+                    <td>@item.ReservationID</td>
+                    <td>@item.CustomerName</td>
+                    <td>@item.Memo</td>
+                    <td>@item.TableNum</td>
+                    <td>@item.StartTime.ToString("t")</td>
+                    <td>@item.PhoneNum</td>
+                </tr>
+            }
         </tbody>
     </table>
 
@@ -87,27 +87,14 @@
             <span class="input-group-text">Pick a Date</span>
             <input type="date" id="resDate" name="resDate" class="form-select mr-3">
             <span class="input-group-text">Choose a Time</span>
-            <select name="resTime" id="resTime" class="form-select">
+            <select name="resTime" id="resTime" class="form-select" disabled>
                 @for (int i = 0; i < (ViewBag.ClosingHour - ViewBag.OpeningHour); i++)
                 {
-    <option value="@(ViewBag.OpeningHour + i)">@(ViewBag.OpeningHour + i):00</option>}
+                    <option value="@(ViewBag.OpeningHour + i)">@(ViewBag.OpeningHour + i):00</option>
+}
 
             </select>
         </div>
-
-        @*      <label for="capacity">Choose a Table Capacity:</label>
-                <select name="capacity" id="capacity">
-                </select>
-                <label for="resDate">Pick a Date:</label>
-                <input type="date" id="resDate" name="resDate">
-                <label for="resTime">Choose a Time:</label>
-                <select name="resTime" id="resTime">
-                    @for (int i = 0; i < (ViewBag.ClosingHour - ViewBag.OpeningHour); i++)
-                    {
-            <option value="@(ViewBag.OpeningHour + i)">@(ViewBag.OpeningHour + i):00</option>}
-
-                </select>*@
-
 
         <h2 id="blockStatus" class="text-primary"></h2>
         <button class="btn btn-success" id="reservation-button">MAKE A RESERVATION</button>
@@ -132,6 +119,9 @@
         $('#capacity').on('mouseover', function () {
             capacitySelected = $(this).val()
         });
+        $('#resDate').on('change', function () {
+            $('#resTime').attr("disabled", false)
+        })
         $('#resTime').on('mouseover', checkAvailability);
             $('#reservation-button').on('click', makeReservation);
         });

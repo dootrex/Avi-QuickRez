@@ -230,14 +230,6 @@ namespace rolesDemoSSD.Migrations
                     b.HasKey("CustomerID");
 
                     b.ToTable("customers");
-
-                    b.HasData(
-                        new
-                        {
-                            CustomerID = 1,
-                            PhoneNum = "2525258987",
-                            bookingName = "Eugene"
-                        });
                 });
 
             modelBuilder.Entity("rolesDemoSSD.Models.Reservation", b =>
@@ -265,16 +257,6 @@ namespace rolesDemoSSD.Migrations
                     b.HasIndex("RestaurantTableID");
 
                     b.ToTable("reservations");
-
-                    b.HasData(
-                        new
-                        {
-                            ReservationID = 1,
-                            CustomerID = 1,
-                            ReservationEnd = new DateTime(2022, 3, 16, 13, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReservationStart = new DateTime(2022, 3, 16, 12, 0, 0, 0, DateTimeKind.Unspecified),
-                            RestaurantTableID = 1
-                        });
                 });
 
             modelBuilder.Entity("rolesDemoSSD.Models.Restaurant", b =>
@@ -360,32 +342,6 @@ namespace rolesDemoSSD.Migrations
                     b.HasIndex("RestaurantID");
 
                     b.ToTable("restaurantTables");
-
-                    b.HasData(
-                        new
-                        {
-                            RestaurantTableID = 1,
-                            RestaurantID = 1,
-                            TableCapacity = 4
-                        },
-                        new
-                        {
-                            RestaurantTableID = 2,
-                            RestaurantID = 1,
-                            TableCapacity = 6
-                        },
-                        new
-                        {
-                            RestaurantTableID = 3,
-                            RestaurantID = 2,
-                            TableCapacity = 4
-                        },
-                        new
-                        {
-                            RestaurantTableID = 4,
-                            RestaurantID = 2,
-                            TableCapacity = 4
-                        });
                 });
 
             modelBuilder.Entity("rolesDemoSSD.ViewModels.RoleVM", b =>
