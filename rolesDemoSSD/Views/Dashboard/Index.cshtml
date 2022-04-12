@@ -1,0 +1,245 @@
+﻿@model IEnumerable<rolesDemoSSD.ViewModels.ReservationVM>
+
+@{ ViewData["Title"] = "Index"; }
+
+
+
+
+<div class="container">
+
+    <h2> Upcoming Reservations </h2>
+
+    <table class="table table-success">
+        <thead>
+            <tr>
+                <th scope="col">Reservation ID</th>
+                <th scope="col"> Customer Name</th>
+                <th scope="col">Memo</th>
+                <th scope="col">Table Number</th>
+                <th scope="col">Start Time</th>
+                <th scope="col">Phone Num</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+<tr>
+    <td>@item.ReservationID</td>
+    <td>@item.CustomerName</td>
+    <td>@item.Memo</td>
+    <td>@item.TableNum</td>
+    <td>@item.StartTime.ToString("t")</td>
+    <td>@item.PhoneNum</td>
+</tr>
+}
+        </tbody>
+    </table>
+
+    <hr />
+    <h4><strong>Your restaurant info</strong></h4>
+    <table class="table table-info">
+        <tr>
+            <td>Total Number of Tables </td>
+            <td>@ViewBag.tableCount</td>
+        </tr>
+        <tr>
+            <td>Opening Hour </td>
+            <td>@ViewBag.OpeningHour</td>
+        </tr>
+        <tr>
+            <td>Closing Hour </td>
+            <td>@ViewBag.ClosingHour</td>
+        </tr>
+    </table>
+
+    <hr />
+    <h2>Add More Tables at @ViewBag.RestaurantName</h2>
+    <div class="add-tables">
+
+
+        <div id="tableInputs">
+            <div id="index_0" class="index">
+                <input type="text" placeholder="number of tables" id="index_0_1" />
+                <input type="text" placeholder="table capacity" id="index_0_2" />
+            </div>
+        </div>
+        <Button class="btn btn-info mr-1 mt-1" id="addInput">Add Row</Button>
+        <button class="btn btn-success mt-1" id="addTables">Add Tables</button>
+    </div>
+    <hr />
+    <div>
+        <div class="input-group mb-1">
+            <span class="input-group-text">Customer Name</span>
+            <input type="text" id="customerName" class="form-control" />
+            <span class="input-group-text">Customer Phone Number</span>
+            <input type="text" id="phoneNumber" class="form-control" />
+        </div>
+        <div class="input-group mb-1">
+            <span class="input-group-text">Memo (Optional)</span>
+            <input type="text" id="memo" placeholder="Add a note" class="form-control" />
+        </div>
+
+        <div class="input-group mb-1">
+            <span class="input-group-text">Choose a Table Capacity</span>
+            <select name="capacity" id="capacity" class="form-select mr-3">
+            </select>
+            <span class="input-group-text">Pick a Date</span>
+            <input type="date" id="resDate" name="resDate" class="form-select mr-3">
+            <span class="input-group-text">Choose a Time</span>
+            <select name="resTime" id="resTime" class="form-select">
+                @for (int i = 0; i < (ViewBag.ClosingHour - ViewBag.OpeningHour); i++)
+                {
+    <option value="@(ViewBag.OpeningHour + i)">@(ViewBag.OpeningHour + i):00</option>}
+
+            </select>
+        </div>
+
+        @*      <label for="capacity">Choose a Table Capacity:</label>
+                <select name="capacity" id="capacity">
+                </select>
+                <label for="resDate">Pick a Date:</label>
+                <input type="date" id="resDate" name="resDate">
+                <label for="resTime">Choose a Time:</label>
+                <select name="resTime" id="resTime">
+                    @for (int i = 0; i < (ViewBag.ClosingHour - ViewBag.OpeningHour); i++)
+                    {
+            <option value="@(ViewBag.OpeningHour + i)">@(ViewBag.OpeningHour + i):00</option>}
+
+                </select>*@
+
+
+        <h2 id="blockStatus" class="text-primary"></h2>
+        <button class="btn btn-success" id="reservation-button">MAKE A RESERVATION</button>
+
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    var capacitySelected;
+    var resID = @ViewBag.RestaurantId;
+    var selectedTime;
+    var returnedTableNumber
+    const BASEURL = 'https://localhost:5001/api/managereservation/'
+        var tableData = [{ cap: "", numberOfTables: "" }];
+    $(document).ready(function () {
+        setRestaurant();
+            $('#addInput').on('click', addRow);
+            $('#addTables').on('click', addTables);
+        $('#capacity').on('mouseover', function () {
+            capacitySelected = $(this).val()
+        });
+        $('#resTime').on('mouseover', checkAvailability);
+            $('#reservation-button').on('click', makeReservation);
+        });
+    function setRestaurant() {
+        $('#capacity').empty()
+        $.get('https://localhost:5001/api/managereservation/' + resID, function (data, status) {
+            data.capacities.forEach(cap => ($('#capacity').append(new Option(cap, cap))));
+        });
+    }
+        function addRow() {
+            var div = $('<div></div>');
+            tableData.push({ cap: "", numberOfTables: "" })
+            var divID = "index_" + (tableData.length - 1);
+            console.log("tableData.length ==> " + tableData.length);
+            console.log(divID)
+            div.attr("id", divID)
+            div.attr("class", "index")
+
+            var input1 = $('<input></input>')
+            input1.attr('type', 'text')
+            input1.attr("placeholder", "number of tables")
+            input1.attr("class","mr-1")
+            var input1ID = divID + "_1"
+            input1.attr("id", input1ID)
+            var input2 = $('<input></input>')
+            input2.attr('type', 'text')
+            input2.attr("placeholder", "table capacity")
+            var input2ID = divID + "_2"
+            input2.attr("id", input2ID)
+            $('#tableInputs').append(div)
+            div.append(input1)
+            div.append(input2)
+
+
+        }
+
+        function addTables() {
+            for (var i = 0; i < tableData.length; i++) {
+
+                var input1ID = "#index_" + i + "_" + 1;
+                tableData[i].numberOfTables = $(input1ID).val()
+                var input2ID = "#index_" + i + "_" + 2;
+                tableData[i].cap = $(input2ID).val()
+
+            }
+            var postData = {
+                lists: tableData,
+                resID
+            };
+
+            $.ajax({
+                url: "https://localhost:5001/api/managereservation/saveTable",
+                type: 'POST',
+                data: JSON.stringify(postData),
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: 'json'
+            })
+            setTimeout(() => { location.reload() }, 1000);
+
+    }
+
+    function checkAvailability() {
+        var date = $('#resDate').val()
+        var time = $('#resTime').val()
+        if (time < 10) {time = '0'+time}
+        var blockStatus = $('#blockStatus')
+
+        var dateString = date + 'T' + time + ':00:00'
+        selectedTime = dateString
+        var url = BASEURL + resID + '/' + capacitySelected + '/' + dateString
+        $.get(url, function (data, status) {
+
+            returnedTableNumber = data
+            if (returnedTableNumber > 0) {
+                blockStatus.text('available')
+            } else {
+                blockStatus.text('not available')
+            }
+        })
+
+        }
+
+
+        function makeReservation() {
+
+        var customerName = $('#customerName').val()
+        var phoneNumber = $('#phoneNumber').val()
+        var memo = $('#memo').val()
+        var postData = {
+            PhoneNum: phoneNumber,
+            bookingName: customerName,
+            cap: +capacitySelected,
+            memo,
+            ReservationStart: selectedTime,
+            RestaurantTableID: returnedTableNumber
+        }
+        $.ajax({
+            url: "https://localhost:5001/api/managereservation",
+            type: 'POST',
+            data: JSON.stringify(postData),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            dataType: 'json'
+        })
+            setTimeout(() => { location.reload() }, 1000);
+        }
+
+</script>

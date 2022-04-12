@@ -1,0 +1,45 @@
+﻿body {
+    background-color: #f5f5dc;
+}
+
+.interior {
+    margin-top: 40px;
+    margin-left: 30px;
+    max-height: 320px;
+    width: auto;
+    position: absolute;
+    left: 44%;
+}
+
+.sign-up, .login {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.reservations {
+    display: grid;
+    max-width: 200px;
+}
+
+.reserve {
+    margin-top: 2rem;
+}
+
+.home-brand {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%
+}
+
+    .home-brand > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .home-brand > img {
+        max-width: 50%;
+    }

@@ -1,0 +1,67 @@
+﻿@*@page
+    @model rolesDemoSSD.Areas.Identity.Pages.Account.DashboardModel
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
+    <script src="~/js/bootstrap-datetimepicker.min.js"></script>
+
+    <div class="dash-title>
+        <h1>Dashboard</h1>
+        <p>{Name of Restaurant}</p>
+        <p>Sign Out</p>
+    </div>
+
+    <hr />
+
+    <div class="container">
+        <div class="row styling">
+            <div class='col-sm-offset-4 col-sm-4'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control input-lg" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="reserve-table">
+                <h2>INSERT TABLE OF RESERVATIONS HERE</h2>
+            </div>
+        </div>
+        <div class="information">
+            <p><strong>Your restaurant info:</strong></p>
+            <p>Number of tables: </p>
+            <p>Opening Hour: </p>
+            <p>Closing Hour: </p>
+            <p>Days closed: Dec 25, Jan 1</p>
+        </div>
+        <div class="edit-delete">
+            <button type="submit" class="edit">Edit</button>
+            <button type="submit" class="delete">Delete</button>
+        </div>
+        <hr />
+
+        <div>
+            <div class="add-reservation">
+                <div class="row styling">
+                    <div class='col-sm-offset-4 col-sm-4'>
+                        <div class="form-group">
+                            <p>Choose Date:</p>
+                            <div class='input-group date' id='datetimepicker1'>
+                                <input type='text' class="form-control input-lg" />
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p>5. Customer Name</p>
+            </div>
+            <div class="number-time-people">
+                <p>2. Number of people: ___ people</p>
+                <p>2. Choose available time from below          Red: Fully Booked   Green: Available</p>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+*@

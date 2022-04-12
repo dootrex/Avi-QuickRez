@@ -1,0 +1,179 @@
+﻿@model IEnumerable<rolesDemoSSD.Models.Restaurant>;
+
+@{ ViewData["Title"] = "Page 1"; }
+
+
+
+
+<div class="container">
+
+    <div class="home-brand">
+        <div>
+            <h1>QuickRez</h1>
+
+            <h3>Book a table 🍽️ </h3>
+        </div>
+        <img id="brand-image" src="https://images.unsplash.com/photo-1552566626-52f8b828add9?crop=faces%2Cedges&cs=tinysrgb&fit=crop&fm=jpg&ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjQ4MjI5MDQz&ixlib=rb-1.2.1&q=60&w=1200&auto=format&h=630&mark-w=64&mark-align=top%2Cleft&mark-pad=50&blend-mode=normal&blend-alpha=10&blend-w=1&mark=https%3A%2F%2Fimages.unsplash.com%2Fopengraph%2Flogo.png&blend=000000" />
+
+    </div>
+
+    <hr />
+
+    <div class="input-group">
+        <span class="input-group-text">Find Restaurant</span>
+        <input type="text" name="searchInput" id="searchInput" placeholder="Search For Your Favourite Restaurant" class="form-control" />
+    </div>
+
+    <ul id="searchResults"></ul>
+
+    <span class="input-group-text">Selected Restaurant</span>
+    <h1 class="btn btn-success m-3" id="selectedRestaurant">None</h1>
+    <hr />
+
+    <div class="input-group mb-1">
+        <span class="input-group-text">Your Name</span>
+        <input type="text" id="customerName" class="form-control" />
+        <span class="input-group-text">Your Phone Number</span>
+        <input type="text" id="phoneNumber" class="form-control" />
+    </div>
+    <div class="input-group mb-1">
+        <span class="input-group-text">Memo (Optional)</span>
+        <input type="text" id="memo" placeholder="Add a note" class="form-control" />
+    </div>
+
+    <div class="input-group mb-1">
+        <span class="input-group-text">Choose a Table Capacity</span>
+        <select name="capacity" id="capacity" class="form-select mr-3">
+        </select>
+        <span class="input-group-text">Pick a Date</span>
+        <input type="date" id="resDate" name="resDate" class="form-select mr-3">
+        <span class="input-group-text">Choose a Time</span>
+        <select name="resTime" id="resTime" class="form-select">
+        </select>
+    </div>
+
+
+
+    <h2 id="blockStatus" class="text-primary"></h2>
+    <button class="btn btn-success" id="reservation-button">MAKE A RESERVATION</button>
+    <hr />
+    <br />
+    <h1 id="reservationConfirmation" class="badge bg-primary text-wrap text-light h2"></h1>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    var searchTerm;
+    var selectedRestaurant;
+    var restaurantName;
+    let searchResults = [];
+    var capacitySelected;
+    const BASEURL = 'https://localhost:5001/api/managereservation/'
+    @{
+        var restaurants = ViewBag.restaurants;
+    }
+
+
+    $(document).ready(function () {
+
+        $('#searchInput').on('input', handleChange)
+        $('#capacity').on('mouseover', function () {
+            capacitySelected = $(this).val()
+        });
+        $('#resTime').on('mouseover', checkAvailability);
+        $('#reservation-button').on('click', makeReservation);
+    });
+
+
+    function handleChange() {
+        searchTerm = $(this).val()
+        $.get('https://localhost:5001/api/managereservation/search/' + searchTerm, function (data, status) {
+            $('#searchResults').empty();
+            if (data.length > 5) {data.length = 5}
+            data.forEach(item => {
+                var li = $('<li></li>')
+                li.text(item.restaurantName)
+                li.attr("id", "resID_" + item.restaurantId)
+                li.attr("class","btn btn-outline-success m-2")
+                $('#searchResults').append(li);
+            });
+            $('li').click(function () {
+
+                selectedRestaurant = this.id;
+                restaurantName = this.innerHTML
+                console.log(restaurantName)
+                setRestaurant();
+                $('#selectedRestaurant').text(restaurantName)
+            })
+        });
+        }
+    function checkAvailability() {
+        var date = $('#resDate').val()
+        var time = $('#resTime').val()
+        if (time < 10) { time = '0' + time }
+        var blockStatus = $('#blockStatus')
+
+        var dateString = date + 'T' + time + ':00:00'
+        selectedTime = dateString
+        var resID = selectedRestaurant.replace("resID_", "");
+        var url = BASEURL + resID + '/' + capacitySelected + '/' + dateString
+        $.get(url, function (data, status) {
+
+            returnedTableNumber = data
+            if (returnedTableNumber > 0) {
+                blockStatus.text('available')
+            } else {
+                blockStatus.text('not available')
+            }
+        })
+
+    }
+
+
+    function makeReservation() {
+
+        var customerName = $('#customerName').val()
+        var phoneNumber = $('#phoneNumber').val()
+        var memo = $('#memo').val()
+        var postData = {
+            PhoneNum: phoneNumber,
+            bookingName: customerName,
+            cap: +capacitySelected,
+            memo,
+            ReservationStart: selectedTime,
+            RestaurantTableID: returnedTableNumber
+        }
+
+        $.ajax({
+            url: "https://localhost:5001/api/managereservation",
+            type: 'POST',
+            data: JSON.stringify(postData),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            dataType: 'json'
+        })
+        var confirmation = "Congrats, you have made a reservation at " + restaurantName + " for " + capacitySelected + " people at " + selectedTime
+        console.log(confirmation)
+        $('#reservationConfirmation').text(confirmation)
+    }
+    function setRestaurant() {
+        $('#capacity').empty()
+        var resID = selectedRestaurant.replace("resID_", "");
+        $.get('https://localhost:5001/api/managereservation/' + resID, function (data, status) {
+            data.capacities.forEach(cap => ($('#capacity').append(new Option(cap, cap))));
+            for (var i = 0; i < (data.closingHour - data.openingHour); i++){
+                var value = data.openingHour + i
+                var time = (data.openingHour + i) + ":00"
+                $('#resTime').append(new Option(time,value))
+        }
+        });
+    }
+
+</script>
+
+
+

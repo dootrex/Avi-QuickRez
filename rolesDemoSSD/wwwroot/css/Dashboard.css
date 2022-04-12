@@ -1,0 +1,44 @@
+﻿/* Just for styling */
+.styling {
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    /* height: 150px;
+  overflow: auto; */
+}
+
+.edit-delete {
+    position: relative;
+    left: 40%;
+}
+
+.edit, .delete {
+    margin: 0.5rem;
+    width: 150px;
+    background: blue;
+    color: white;
+}
+
+.customer-info {
+    display: grid;
+    grid-template-columns: repeat(4, 150px);
+}
+
+    .customer-info p {
+        margin-left: 15px;
+    }
+
+    .customer-info input {
+        height: 30px;
+    }
+
+.form-group {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.number-time-people {
+    position: relative;
+    left: 80%;
+    max-width: 500px;
+}

@@ -1,0 +1,82 @@
+{
+	"info": {
+		"_postman_id": "51001120-330b-4e02-aaaa-9f601da5f125",
+		"name": "ProjectPhase2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post Reservation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"PhoneNum\" : \"2362558745\",\r\n    \"bookingName\" : \"Avi\",\r\n    \"memo\": \"I want Cake\",\r\n    \"ReservationStart\": 9,\r\n    \"RestaurantTableID\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44392/api/Reservation",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44392",
+					"path": [
+						"api",
+						"Reservation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check if reservation available",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44392/api/Reservation/1/4/9",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44392",
+					"path": [
+						"api",
+						"Reservation",
+						"1",
+						"4",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get restaurant info with kind of tables",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44392/api/Reservation/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44392",
+					"path": [
+						"api",
+						"Reservation",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
